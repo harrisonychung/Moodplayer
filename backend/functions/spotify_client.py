@@ -52,3 +52,4 @@ class SpotifyClient(object):
 
 #wildcards %%
 #offset - which point onwards you want to get results
+
