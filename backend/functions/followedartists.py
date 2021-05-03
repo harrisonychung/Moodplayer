@@ -22,3 +22,5 @@ def followed_artists(authorization):
                users_top_artists_uri.append(artist_data["uri"])
     
     return users_top_artists_uri
+
+

@@ -1,0 +1,12 @@
+body {
+    background:
+    url(https://eskipaper.com/images/music-wallpaper-19.jpg);
+    background-size: cover;
+    padding-top: 2%; 
+    padding-bottom: 15%;
+}
+
+#block {
+    font-family: sans-serif;
+    color:white
+}

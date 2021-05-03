@@ -1,0 +1,3 @@
+with open('oldfile.txt') as fin, open('newfile.txt', 'w') as fout:
+    for line in fin:
+        fout.write(line.replace('\t', '    '))
