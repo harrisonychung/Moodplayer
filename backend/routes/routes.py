@@ -1,13 +1,18 @@
-from flask import Flask, render_template, redirect, request, session, jsonify, make_response,session,redirect
+import os
+from flask import Flask, render_template, redirect, request, session, jsonify, make_response,session,redirect, url_for
 from flask_cors import CORS
 import spotipy
 from spotify import Spotify
 #import spotipy.util as util
 import time
 import json 
+import logging
+print("hello", os.path.dirname(__file__))
+logging.getLogger('flask_cors').level = logging.DEBUG
 
 app = Flask(__name__)
 CORS(app)
+
 app.secret_key = "SSK"
 
 API_BASE = 'https://accounts.spotify.com'
@@ -43,13 +48,15 @@ def api_callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     access_token = token_info.get("access_token")
+    expires_at = token_info.get("expires_at")
+    expires_in = token_info.get("expires_in")
     refresh_token = token_info.get("refresh_token")
     scope = token_info.get("scope")
     token_type = token_info.get("token_type")
     print(token_info)
     # Saving the access token along with all other token related info
     session["token_info"] = token_info
-    return redirect(f"http://localhost:3000/login?access_token={access_token}&refresh_token={refresh_token}")
+    return redirect(f"http://localhost:3000/Generate?access_token={access_token}&expires_at={expires_at}&expires_in={expires_in}&refresh_token={refresh_token}&scope={scope}&token_type={token_type}")
     
 
 # Checks to see if token is valid and gets a new token if not
@@ -59,19 +66,20 @@ def get_token(session):
     token_info = session.get("token_info", {})
 
     # Checking if the session already has a token stored
-    if not (session.get('token_info', False)):
+    #if not (session.get('token_info', False)):
+    if not (token_info, False):
         token_valid = False
         return token_info, token_valid
 
     # Checking if token has expired
     now = int(time.time())
-    is_token_expired = session.get('token_info').get('expires_at') - now < 60
+    is_token_expired = token_info.get('expires_at') - now < 60
 
     # Refreshing token if it has expired
     if (is_token_expired):
         # Don't reuse a SpotifyOAuth object because they store token info and you could leak user tokens if you reuse a SpotifyOAuth object
         sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id = CLI_ID, client_secret = CLI_SEC, redirect_uri = REDIRECT_URI, scope = SCOPE)
-        token_info = sp_oauth.refresh_access_token(session.get('token_info').get('refresh_token'))
+        token_info = sp_oauth.refresh_access_token(token_info.get('refresh_token'))
 
     token_valid = True
     return token_info, token_valid
@@ -79,6 +87,7 @@ def get_token(session):
 @app.route("/index", methods=["GET"])
 def index():
     print(session)
+    print(url_for("static", filename="landing.css"))
     return render_template('landing.html')
 
 @app.route("/topartist", methods=["GET"])
@@ -87,7 +96,7 @@ def get_top_artists():
     session.modified = True
     if not authorized:
         return jsonify(redirect('/'))
-    harrison = Spotify(session.get("token_info").get("access_token"))
+    harrison = Spotify(token_info.get("access_token"))
     return jsonify(harrison.authenticated_user_top_artists())
 
 @app.route("/toptracks", methods=["GET"])
@@ -96,29 +105,29 @@ def get_top_tracks():
     session.modified = True
     if not authorized:
         return jsonify(redirect('/'))
-    harrison = Spotify(session.get("token_info").get("access_token"))
+    harrison = Spotify(token_info.get("access_token"))
     top_artists = harrison.authenticated_user_top_artists()  
     return jsonify(harrison.authenticated_user_top_tracks(top_artists))
     
 
 @app.route("/moodtracks", methods=["GET"])
 def get_user_mood_tracks():
-    session['token_info'], authorized = Spotify.get_token(session)
+    token_info, authorized = Spotify.get_token(session)
     session.modified = True
     if not authorized:
         return jsonify(redirect('/'))
-    harrison = Spotify(session.get("token_info").get("access_token"))
+    harrison = Spotify(token_info.get("access_token"))
     top_artists = harrison.authenticated_user_top_artists() 
     top_tracks = harrison.authenticated_user_top_tracks(top_artists)
     return jsonify(harrison.authenticated_user_mood_tracks(.02,top_tracks))
 
 @app.route("/moodplaylist", methods=["GET"])
 def authenticated_user_create_mood_playlist():
-    session['token_info'], authorized = Spotify.get_token(session)
+    token_info, authorized = Spotify.get_token(session)
     session.modified = True
     if not authorized:
         return jsonify(redirect('/'))
-    harrison = Spotify(session.get("token_info").get("access_token"))
+    harrison = Spotify(token_info.get("access_token"))
     top_artists = harrison.authenticated_user_top_artists()
     top_tracks = harrison.authenticated_user_top_tracks(top_artists)
     mood_tracks = harrison.authenticated_user_mood_tracks(.02, top_tracks)
@@ -126,25 +135,24 @@ def authenticated_user_create_mood_playlist():
 
 @app.route("/generateplaylist", methods=["POST"])
 def moodplayer():
-    token_info = response.get_json()
-    session['token_info'], authorized = Spotify.get_token(token_info)
-    print(session)
-    session.modified = True
+    data = request.get_json()
+    token_info, authorized = Spotify.get_token(data["token_info"])
     if not authorized:
         return redirect('/')
     #data = request.get_json()
-    #mood = data.get("mood")
-    mood = request.form.get("mood")
-    harrison = Spotify(session.get("token_info").get("access_token"))
+    valence = data.get("valence")
+    energy = data.get("energy")
+    danceability = data.get("danceability")
+    harrison = Spotify(token_info.get("access_token"))
     top_artists = harrison.authenticated_user_top_artists()
     top_tracks = harrison.authenticated_user_top_tracks(top_artists)
-    mood_tracks = harrison.authenticated_user_mood_tracks(.02, top_tracks)
+    mood_tracks = harrison.authenticated_user_mood_tracks(.02, .03, .04, top_tracks)
     harrison.authenticated_user_create_mood_playlist(mood_tracks)
-    return jsonify({"success":True})
+    return jsonify({"success":token_info})
     
 if __name__ == "__main__":
     app.run(debug=True)
-
+    print(url_for("static", filename="landing.css"))
 
 # # @app.route("/topartist/<sp>", methods=["GET"])
 # def get_top_artists(sp):

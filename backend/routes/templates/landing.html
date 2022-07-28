@@ -1,25 +1,126 @@
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Landing Page</title>
-    <link href="landing.css" rel="stylesheet" type="text/css">
+    <title>Moodplayer</title>
+    <link rel="stylesheet">
+    <!-- href={{ url_for("static", filename="landing.css") }}> -->
 </head>
-
-<body background>
-    <div class="container text-center">
-        <div class = "maintext" id="block">
-            <h1>Welcome to Moodplayer!</h1>
-            <h2>Please enter your Spotify username</h2>
+<body>
+    <div class="container">
+    </div>
+    <div class="content">
+        <div class="left-col">
+        <h1>Mood<br>Player</h1>
+        <a href="http://localhost:5000/start">
+        <button class="button">Click Me To Start!</button>
+        </a>
+        </div>
+        <div class="right-col">
+        <p>Click Here To Listen</p>
+        <img src="https://i.imgur.com/P0TML5Q.png" id="icon">
         </div>
     </div>
-    <div class="username text-center">
-        <form target="_blank" action="http://localhost:3000/login/?param1=mood;
-        BQDyBPAil7-TLfD3Yhp84dLifVfUfAhXQXk-TXtD_8XmDeHouhQlmykZmOkm5KUIpaTo549Plc-_fVq7Ai4wk9gFTON3NsUuQ99ZWH43Bj1mTohxXaoA3yvKEok49Bb3nMCxkBvwPx7LLj4ugo_Eo1IptUg000HkXWsyMtaifDXRojWK2XFgf-NWuMtJ-Z2u2ZQpUpvyff5J1N_89Wl1YjqUEr_mhiImZOpjpw" methods="POST">
-        <input type="text" placeholder="Spotify Username" required>
-        <button type="submit">Submit</button>
-        </form>
-    </div>
-</body>
+
+
+    <!-- <audio id="mySong" src="song.mp3" type="audio/mp3">
+    </audio> -->
+    <audio id="mySong">
+        <source src="http://jPlayer.org/audio/mp3/Miaow-07-Bubble.mp3" type="audio/mpeg">
+    </audio>
+
+<script>
+    var mySong = document.getElementById("mySong");
+    var icon = document.getElementById("icon");
+    
+    icon.addEventListener("click", function playSong() {
+        if(mySong.paused){ 
+            mySong.play();
+            icon.src= "https://i.imgur.com/xTVieuS.png"
+        }else {
+            mySong.pause();
+            icon.src= "https://i.imgur.com/P0TML5Q.png"; 
+        }
+    })
+
+</script>
+
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.container {
+    height: 100vh;
+    width: 100%;
+    /* background-image: url(../static/image.png); */
+    background-image: url(https://i.imgur.com/LwZUscS.png);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.content {
+    width: 100%;    
+    position: absolute;
+    top: 30%;
+}
+
+.button {
+    border: none;
+    position: relative;
+    right: 250px;
+    top: 250px;
+    color: #efa49b;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #aad2c7;
+    color: white;
+  }
+
+.left-col{
+    margin-left: 6%;
+}
+
+.left-col h1{
+    font-size: 90px;
+    color: #fff;
+    line-height: 110px;
+    float: left;
+}
+
+.right-col {
+    float: right;
+    margin-right: 6%;
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.right-col p{
+    font-size: 35px;
+    font-weight: 500;
+    text-shadow: 2px;
+    color: #fff;
+    line-height: 110px;
+    margin-right: 5px;
+    float: right;
+}
+
+#icon {
+    width: 80px;
+    cursor: pointer;
+}
+</style>
 
 </body>
 </html>
