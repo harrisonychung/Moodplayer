@@ -1,10 +1,175 @@
 .App {
   text-align: center;
+  background-color: #ffffff;
+  display: flex;
+  /* margin-top: 350px; */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-image: linear-gradient(#c074b2, #1f2027);
+  height: 100vh;
+}
+
+
+
+.Login {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* height: 100vh; */
+  color: white;
+}
+
+.Login h2 {
+  margin-top: 70px;
+}
+
+.relaxedButton {
+  color: #FFF;
+    border: 1px solid #1DB954;
+    width: 200px;
+    background-color: #1DB954;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 10px 0;
+    text-transform: uppercase;
+}
+
+.energizedButton {
+  color: #FFF;
+    border: 1px solid #1DB954;
+    width: 200px;
+    background-color: #1DB954;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 10px;
+    text-transform: uppercase;
+}
+
+.DefiantButton {
+  color: #FFF;
+  border: 1px solid #1DB954;
+  width: 200px;
+  background-color: #1DB954;
+  padding: 5px;
+  border-radius: 10px;
+  margin: 10px;
+  text-transform: uppercase;
+}
+
+.melancholicButton {
+  color: #FFF;
+  border: 1px solid #1DB954;
+  width: 200px;
+  background-color: #1DB954;
+  padding: 5px;
+  border-radius: 10px;
+  margin: 10px;
+  text-transform: uppercase;
+}
+
+.dataFlip button {
+  color: #FFF;
+  border: 1px solid #1DB954;
+  width: 170px;
+  background-color: #1DB954;
+  padding: 5px;
+  border-radius: 10px;
+  margin: 10px;
+  text-transform: uppercase;
+}
+
+
+.About {
+  text-align: center;
+}
+
+.about-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  display:inline-block;
+  padding:0.3em 1.2em;
+  margin:0 0.1em 0.1em 0;
+  border:0.16em solid rgba(255,255,255,0);
+  border-radius:2em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-weight:300;
+  color:#FFFFFF;
+  text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+  text-align:center;
+  transition: all 0.2s;
+}
+
+.button button, .bttLog {
+  padding: 10px;
+  width: 250px;
+  color: #FFF;
+  border: 1px solid #1DB954;
+  background-color: #1DB954;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 25px;
+  text-transform: uppercase;
+}
+
+.bttLog {
+  width: initial;
+  margin-top: 250px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+.button:hover{
+  border: 1px solid #1DB954;
+  }
+
+  .range-slider__wrap input[type="range"] {
+    width: 40%;
+  }
+
+  .jumbotron {
+    background-color: inherit !important;
+  }
+
+.dataFlip {
+  display: flex;
+    justify-content: space-between;
+    margin: 100px 0;
+}
+
+.dataFlip p {
+  font-size: 20px;
+    padding: 100px 0;
+    color: white;
+}
+
+.spotifyPlayer {
+  margin: 20px;
+}
+
+@media all and (max-width:30em){
+  .button{
+    display:block;
+    margin: 0.2em auto;
+  }
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.flippy-front {
+  padding-top: 200px !important;
+    font-size: 35px;
+    color: white;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -36,3 +201,4 @@
     transform: rotate(360deg);
   }
 }
+

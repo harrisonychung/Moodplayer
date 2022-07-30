@@ -1,0 +1,39 @@
+.Navbar {
+    text-align: top;
+    height: 100vh;
+    /* position: relative;
+    bottom: 350px; */
+    background-image: linear-gradient(#c074b2, #1f2027);
+    width: 100%;
+}
+
+nav {
+    background-color: rgba(0, 0, 0, 0.6)
+}
+
+#responsive-navbar-nav {
+   justify-content: flex-end;
+}
+
+.navbar-nav {
+    float: right;
+}
+
+.navbar-brand {
+    font-size: 25px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.navbar-nav a {
+    color: white !important;
+}
+
+.dropdown-menu {
+    left: inherit;
+    right: 0px;
+}
+
+.dropdown-menu a {
+    color: black !important;
+}
